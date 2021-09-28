@@ -51,9 +51,14 @@ document types that
 
 ## C++ API
 
-Coming soon!
+Like the C api, [prettyprint.h][cpp-api] contains the C++ API. Though not fully
+documented, the functions/classes should be mostly self-explanatory. See the [c++
+example][cppex] for an idea of how it works. The C++ API is a wrapper over the C
+API, so it behaves very similarly.
 
 
 [pretty]: https://homepages.inf.ed.ac.uk/wadler/papers/prettier/prettier.pdf
 [c-api]: src/prettyprint.h
+[cpp-api]: src/prettyprint.h
 [cex]: example/c-api.c
+[cppex]: example/cpp-api.c
