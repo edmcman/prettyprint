@@ -20,8 +20,14 @@ void _pp_text(pp_doc_text* RESTRICT result, const char* RESTRICT text, size_t le
     result->length = length;
 }
 
-static pp_doc _line = { PP_DOC_LINE };
-pp_doc* _pp_line = &_line;
+static pp_doc_line _line_default = { PP_DOC_LINE, " ", 1 };
+pp_doc* _pp_line_default = (pp_doc*) &_line_default;
+
+void _pp_line(pp_doc_line* RESTRICT result, const char* RESTRICT text, size_t length) {
+    result->type = PP_DOC_LINE;
+    result->text = text;
+    result->length = length;
+}
 
 void _pp_nest(pp_doc_nest* RESTRICT result, size_t indent, const pp_doc* RESTRICT nested) {
     result->type = PP_DOC_NEST;
@@ -96,7 +102,7 @@ static void pretty(const pp_writer* RESTRICT writer, const pp_settings* RESTRICT
         case PP_DOC_TEXT:
             {
                 if (DOCAS(d,text)->length > *remaining) {
-                    pretty(writer, settings, _pp_line, remaining, indent, group);
+                    pretty(writer, settings, _pp_line_default, remaining, indent, group);
                 }
                 const pp_doc_text* t = DOCAS(d,text);
                 size_t len = t->length;
@@ -104,7 +110,7 @@ static void pretty(const pp_writer* RESTRICT writer, const pp_settings* RESTRICT
                     do_write(t->text + (t->length - len), *remaining);
                     len -= *remaining;
                     *remaining = 0;
-                    pretty(writer, settings, _pp_line, remaining, indent, group);
+                    pretty(writer, settings, _pp_line_default, remaining, indent, group);
                 }
                 do_write(t->text + (t->length - len), len);
                 *remaining -= len;
@@ -112,8 +118,9 @@ static void pretty(const pp_writer* RESTRICT writer, const pp_settings* RESTRICT
             break;
         case PP_DOC_LINE:
             if (group) {
-                do_write(" ", 1);
-                *remaining -= 1;
+                const pp_doc_line* l = DOCAS(d,line);
+                do_write(l->text, l->length);
+                *remaining -= l->length;
             }
             else {
                 do_write("\n", 1);

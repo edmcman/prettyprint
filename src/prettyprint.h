@@ -52,6 +52,21 @@ typedef struct {
 } pp_doc_text;
 
 /**
+ * @brief A line break object.
+ */
+typedef struct {
+  pp_doc_type_t type;
+  /**
+   * @brief The flattened replacement text.
+   */
+  const char* text;
+  /**
+   * @brief The length of the replacement text.
+   */
+  size_t length;
+} pp_doc_line;
+
+/**
  * @brief An append document object.
  */
 typedef struct {
@@ -197,9 +212,13 @@ extern pp_doc* _pp_sep;
 void _pp_text(pp_doc_text* result, const char* text, size_t length);
 
 /**
- * @brief A line document.
+ * @brief Initialize a line document.
+ *
+ * @param result The document to initialize.
+ * @param text The string to flatten this line document to, or NULL.
+ * @param length The length of replacement text to use.
  */
-extern pp_doc* _pp_line;
+void _pp_line(pp_doc_line* result, const char* text, size_t length);
 
 /**
  * @brief Initialize a nested document.
@@ -283,8 +302,11 @@ pp_doc* pp_text(const char* text, size_t length);
 /**
  * @brief Create a line document.
  *
- * @return The document (not malloc'd).
+ * @param flattened The text to flatten the line break to.
+ *
+ * @return The document, or NULL if the document could not be allocated.
  */
+pp_doc* pp_line2(const char *text);
 pp_doc* pp_line(void);
 
 /**
@@ -426,6 +448,12 @@ struct doc_string : public from_doc<pp_doc_text> {
     doc_string(const std::string& s);
 private:
     const std::string s;
+};
+
+struct doc_line : public from_doc<pp_doc_line> {
+    doc_line(const std::string& flattened_ = " ");
+private:
+    const std::string flattened;
 };
 
 struct doc_nest : public from_doc<pp_doc_nest> {

@@ -24,6 +24,12 @@ doc_string::doc_string(const std::string& s)
     _pp_text(static_cast<pp_doc_text*>(this), this->s.data(), this->s.size());
 }
 
+doc_line::doc_line(const std::string& flattened)
+    : flattened(flattened)
+{
+    _pp_line(static_cast<pp_doc_line*>(this), this->flattened.data ());
+}
+
 doc_nest::doc_nest(size_t indent, std::shared_ptr<const doc> nested)
     : s_nested(nested)
 {
@@ -110,7 +116,11 @@ std::shared_ptr<doc> text(const std::string& s) {
 }
 
 std::shared_ptr<doc> line() {
-    return make_shared_static((doc*)_pp_line);
+  return make_shared_static((doc*)_pp_line_default);
+}
+
+std::shared_ptr<doc> line(const char* nested) {
+    return make_shared_d<data::doc_line>(nested);
 }
 
 std::shared_ptr<doc> nest(size_t indent, std::shared_ptr<const doc> nested) {
