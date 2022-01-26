@@ -27,7 +27,7 @@ doc_string::doc_string(const std::string& s)
 doc_line::doc_line(const std::string& flattened)
     : flattened(flattened)
 {
-    _pp_line(static_cast<pp_doc_line*>(this), this->flattened.data ());
+    _pp_line(static_cast<pp_doc_line*>(this), this->flattened.data (), this->flattened.size ());
 }
 
 doc_nest::doc_nest(size_t indent, std::shared_ptr<const doc> nested)
