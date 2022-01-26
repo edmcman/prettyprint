@@ -48,11 +48,20 @@ void print_grouped() {
     pp_free(grouped);
 }
 
+/* bracket l x r = group (text l <> */
+/* nest 2 (line <> x) <> */
+/* line <> text r) */
+
+pp_doc* bracket(const char *l, pp_doc* d, const char *r) {
+  return pp_group(pp_appends(pp_string (l),
+                             pp_nest (2, pp_appends(pp_line (),
+                                                    d)),
+                             pp_line (),
+                             pp_string (r)));
+}
+
 void print_lineopt() {
-  pp_doc* doc = pp_group(pp_appends(pp_string("open["),
-                                    pp_nest(1, pp_string("stuff stuff stuff")),
-                                    pp_line2(""),
-                                    pp_string("]")));
+    pp_doc* doc = bracket ("[[[", pp_string("stuff stuff stuff"), "]]]");
 
     pp_settings settings = {0};
     settings.width = 40;
