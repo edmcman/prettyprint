@@ -48,6 +48,36 @@ void print_grouped() {
     pp_free(grouped);
 }
 
+/* bracket l x r = group (text l <> */
+/* nest 2 (line <> x) <> */
+/* line <> text r) */
+
+pp_doc* bracket(const char *l, pp_doc* d, const char *r) {
+  return pp_group(pp_appends(pp_string (l),
+                             pp_nest (2, pp_appends(pp_line (),
+                                                    d)),
+                             pp_line (),
+                             pp_string (r)));
+}
+
+void print_lineopt() {
+    pp_doc* doc = bracket ("[[[", pp_string("stuff stuff stuff"), "]]]");
+
+    pp_settings settings = {0};
+    settings.width = 40;
+    settings.max_indent = 20;
+    pp_pretty(stdout, &settings, doc);
+    fprintf(stdout, "\n\n");
+
+    settings.width = 10;
+    settings.max_indent = 4;
+    pp_pretty(stdout, &settings, doc);
+    fprintf(stdout, "\n\n");
+
+    pp_free(doc);
+}
+
+
 enum {
     PP_DOC_OWNED_TEXT = PP_DOC_EXTENSION_START,
     PP_DOC_TIME,
@@ -163,6 +193,7 @@ void print_ext() {
 int main() {
     print_basic();
     print_grouped();
+    print_lineopt();
     print_ext();
 
     return 0;
