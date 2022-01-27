@@ -83,7 +83,12 @@ void pp_free_ext(void (*free_ext)(pp_doc* d), pp_doc* d) {
                 break;
             case PP_DOC_NIL:
             case PP_DOC_SEP:
+                return;
             case PP_DOC_LINE:
+                if (d == _pp_line_default || d == _pp_line_skip)
+                    return;
+                else
+                    break;
             default:
                 return;
         }
