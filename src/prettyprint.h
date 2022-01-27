@@ -300,14 +300,27 @@ pp_doc* pp_sep(void);
 pp_doc* pp_text(const char* text, size_t length);
 
 /**
- * @brief Create a line document.
+ * @brief Create a line document that flattens to a space.
  *
- * @param flattened The text to flatten the line break to.
+ * @return The document.
+ */
+pp_doc* pp_line(void);
+
+/**
+ * @brief Create a line document that flattens to an empty string.
+ *
+ * @return The document.
+ */
+pp_doc* pp_line3(void);
+
+/**
+ * @brief Create a line document that flattens to a specified string.
+ *
+ * @param text The text to flatten the line break to.
  *
  * @return The document, or NULL if the document could not be allocated.
  */
 pp_doc* pp_line2(const char *text);
-pp_doc* pp_line(void);
 
 /**
  * @brief Create a nested document.
