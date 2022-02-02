@@ -12,7 +12,6 @@
 typedef enum {
     PP_DOC_NIL,
     PP_DOC_TEXT,
-    PP_DOC_SEP,
     PP_DOC_LINE,
     PP_DOC_NEST,
     PP_DOC_APPEND,
@@ -195,14 +194,6 @@ typedef struct {
 extern pp_doc* _pp_nil;
 
 /**
- * @brief A separator document.
- *
- * A separator is most commonly represented as a space, but may be omitted in
- * newlines.
- */
-extern pp_doc* _pp_sep;
-
-/**
  * @brief Initialize a text document.
  *
  * @param result The document to initialize.
@@ -281,13 +272,6 @@ void _pp_pretty(const pp_writer* writer, const pp_settings* settings, const pp_d
  * @return The document (not malloc'd).
  */
 pp_doc* pp_nil(void);
-
-/**
- * @brief Create a separator document.
- *
- * @return The document (not malloc'd).
- */
-pp_doc* pp_sep(void);
 
 /**
  * @brief Create a text document.

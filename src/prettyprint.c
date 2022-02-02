@@ -10,10 +10,6 @@ pp_doc* pp_nil(void) {
     return _pp_nil;
 }
 
-pp_doc* pp_sep(void) {
-    return _pp_sep;
-}
-
 pp_doc* pp_text(const char* text, size_t length) {
     pp_doc_text* t = (pp_doc_text*)malloc(sizeof(pp_doc_text));
     if (t == NULL) return NULL;
@@ -82,7 +78,6 @@ void pp_free_ext(void (*free_ext)(pp_doc* d), pp_doc* d) {
                 pp_free_ext(free_ext, (pp_doc*)DOCAS(d,group)->grouped);
                 break;
             case PP_DOC_NIL:
-            case PP_DOC_SEP:
                 return;
             case PP_DOC_LINE:
                 if (d == _pp_line_default || d == _pp_line_skip)
@@ -111,10 +106,9 @@ pp_doc* pp_words(const char* text) {
         pp_doc* rest = pp_words(text+1);
         if (rest == NULL) return NULL;
 
-        pp_doc* s;
-        if (*text == '\n') s = pp_line();
-        else s = pp_sep();
-        
+        // XXX: Not sure this is right
+        pp_doc* s = pp_line();
+
         pp_doc* srest = pp_append(s, rest);
         if (srest == NULL) {
             pp_free(rest);

@@ -11,9 +11,6 @@
 static pp_doc _nil = { PP_DOC_NIL };
 pp_doc* _pp_nil = &_nil;
 
-static pp_doc _sep = { PP_DOC_SEP };
-pp_doc* _pp_sep = &_sep;
-
 void _pp_text(pp_doc_text* RESTRICT result, const char* RESTRICT text, size_t length) {
     result->type = PP_DOC_TEXT;
     result->text = text;
@@ -59,9 +56,6 @@ static int can_flatten(const pp_settings* RESTRICT settings, const pp_doc* RESTR
     switch (d->type) {
         case PP_DOC_NIL:
             return 1;
-        case PP_DOC_SEP:
-            if (*remaining > 0) *remaining -= 1;
-            return 1;
         case PP_DOC_TEXT:
             if (*remaining < DOCAS(d,text)->length) return 0;
             *remaining -= DOCAS(d,text)->length;
@@ -94,12 +88,6 @@ static void pretty(const pp_writer* RESTRICT writer, const pp_settings* RESTRICT
 #define do_write(c,l) writer->write(writer->data,c,l)
     switch (tp) {
         case PP_DOC_NIL:
-            break;
-        case PP_DOC_SEP:
-            if (settings->width - indent != *remaining && *remaining != 0) {
-                do_write(" ", 1);
-                *remaining -= 1;
-            }
             break;
         case PP_DOC_TEXT:
             {

@@ -168,7 +168,7 @@ void print_ext() {
 
     pp_doc* extensions = pp_appends(
             pp_owned_string(c),
-            pp_line(), pp_string("time:"), pp_sep(), pp_time(),
+            pp_line(), pp_string("time:"), pp_line(), pp_time(),
             pp_filtered(1, pp_appends(pp_line(), pp_string("one"))),
             pp_filtered(2, pp_appends(pp_line(), pp_string("two"))),
             pp_filtered(3, pp_appends(pp_line(), pp_string("three"))),
