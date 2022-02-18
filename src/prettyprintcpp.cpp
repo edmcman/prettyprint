@@ -65,11 +65,7 @@ static std::shared_ptr<doc> get_words(const char* t) {
     else {
         auto rest = get_words(t+1);
 
-        std::shared_ptr<doc> s;
-        if (*t == '\n') s = line();
-        else s = sep();
-
-        return text(start, t - start) + s + rest;
+        return text(start, t - start) + softbreak() + rest;
     }
 }
 
@@ -99,10 +95,6 @@ std::shared_ptr<doc> nil() {
     return make_shared_static((doc*)_pp_nil);
 }
 
-std::shared_ptr<doc> sep() {
-    return make_shared_static((doc*)_pp_sep);
-}
-
 std::shared_ptr<doc> text(const char* t, size_t length) {
     return make_shared_d<data::doc_text>(t, length);
 }
@@ -116,11 +108,15 @@ std::shared_ptr<doc> text(const std::string& s) {
 }
 
 std::shared_ptr<doc> line() {
-  return make_shared_static((doc*)_pp_line_default);
+    return make_shared_static((doc*)_pp_line_default);
 }
 
-std::shared_ptr<doc> line(const char* nested) {
-    return make_shared_d<data::doc_line>(nested);
+std::shared_ptr<doc> line_or(const char* separator) {
+    return make_shared_d<data::doc_line>(separator);
+}
+
+std::shared_ptr<doc> softbreak() {
+    return make_shared_static((doc*)_pp_softbreak);
 }
 
 std::shared_ptr<doc> nest(size_t indent, std::shared_ptr<const doc> nested) {
@@ -145,7 +141,7 @@ std::shared_ptr<doc> operator+(std::shared_ptr<const doc> a, const std::string& 
 
 /** Aliases of append that add a separator. */
 std::shared_ptr<doc> operator<<(std::shared_ptr<const doc> a, std::shared_ptr<const doc> b) {
-    return a + sep() + b;
+    return a + softbreak() + b;
 }
 
 std::shared_ptr<doc> words(const std::string& words) {

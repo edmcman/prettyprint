@@ -291,20 +291,21 @@ pp_doc* pp_text(const char* text, size_t length);
 pp_doc* pp_line(void);
 
 /**
- * @brief Create a line document that flattens to an empty string.
- *
- * @return The document.
- */
-pp_doc* pp_line3(void);
-
-/**
  * @brief Create a line document that flattens to a specified string.
  *
  * @param text The text to flatten the line break to.
  *
  * @return The document, or NULL if the document could not be allocated.
  */
-pp_doc* pp_line2(const char *text);
+pp_doc* pp_line_or(const char *text);
+
+/**
+ * @brief Add a space if possible, otherwise add a line break.
+ *
+ * @return The document.
+ */
+pp_doc* pp_softbreak(void);
+
 
 /**
  * @brief Create a nested document.
@@ -484,13 +485,13 @@ private:
 
 std::shared_ptr<doc> nil();
 
-std::shared_ptr<doc> sep();
-
 std::shared_ptr<doc> text(const char* t, size_t length);
 std::shared_ptr<doc> text(const char* str);
 std::shared_ptr<doc> text(const std::string& s);
 
 std::shared_ptr<doc> line();
+std::shared_ptr<doc> line_or(const char* separator);
+std::shared_ptr<doc> softbreak();
 
 std::shared_ptr<doc> nest(size_t indent, std::shared_ptr<const doc> nested);
 

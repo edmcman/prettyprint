@@ -51,7 +51,7 @@ void print_grouped() {
 void print_lineopt() {
   pp_doc* doc = pp_group(pp_appends(pp_string("open["),
                                     pp_nest(1, pp_string("stuff stuff stuff")),
-                                    pp_line2(""),
+                                    pp_line_or(""),
                                     pp_string("]")));
 
     pp_settings settings = {0};

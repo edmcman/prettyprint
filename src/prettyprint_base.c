@@ -17,10 +17,13 @@ void _pp_text(pp_doc_text* RESTRICT result, const char* RESTRICT text, size_t le
     result->length = length;
 }
 
-static pp_doc_line _line_default = { PP_DOC_LINE, " ", 1 };
-pp_doc* _pp_line_default = (pp_doc*) &_line_default;
+static const pp_doc_line _line_default = { PP_DOC_LINE, " ", 1 };
+pp_doc*_pp_line_default = (pp_doc*) &_line_default;
 static pp_doc_line _line_skip = { PP_DOC_LINE, "", 0 };
 pp_doc* _pp_line_skip = (pp_doc*) &_line_skip;
+
+static pp_doc_group _softbreak = { PP_DOC_GROUP, (pp_doc*) &_line_default };
+pp_doc* _pp_softbreak = (pp_doc*) &_softbreak;
 
 void _pp_line(pp_doc_line* RESTRICT result, const char* RESTRICT text, size_t length) {
     result->type = PP_DOC_LINE;

@@ -21,14 +21,14 @@ pp_doc* pp_line(void) {
     return _pp_line_default;
 }
 
-pp_doc* pp_line2(const char *flattened) {
+pp_doc* pp_line_or(const char *flattened) {
     pp_doc_line* l = (pp_doc_line*)malloc(sizeof(pp_doc_line));
     if (l == NULL) return NULL;
     _pp_line (l, flattened, strlen(flattened));
 }
 
-pp_doc* pp_line3(void) {
-    return _pp_line_skip;
+pp_doc* pp_softbreak(void) {
+  return _pp_softbreak;
 }
 
 pp_doc* pp_nest(size_t indent, const pp_doc* nested) {
